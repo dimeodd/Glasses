@@ -17,32 +17,28 @@ class Workspace {
 
     Redraw() {
         owner.innerHTML = '';
-        var i = 0;
-        this.data.components.forEach(element => {
-            owner.appendChild(CreateInputName(i));
-            i++;
-        });
-        owner.appendChild(AddComponent());
-        owner.appendChild(Calculate());
+        owner.appendChild(ElFactrory.CreateInputList());
+        owner.appendChild(ElFactrory.AddButton());
+        owner.appendChild(ElFactrory.CalculateButton());
     }
+
     Calculate() {
-        TestPercent();
-        debugger;
         var ktr = 0;
+        var calcList = [];
         this.data.components.forEach(component => {
-            var chim_element = component.select;
-            var elKTR = f1(chim_element, component.mass)
-            ktr += elKTR * component.mass / 100;
+            calcList.push({ chimEl: component.select, mass: component.mass });
         });
+
+        calcList.forEach(el => {
+            var elKTR = glass_f1(el.chimEl, el.mass)
+            ktr += elKTR * el.mass / 100;
+        })
+
         alert(ktr);
-
-        function TestPercent() {
-
-        }
     }
 }
 
-function f1(element, mass) {
+function glass_f1(element, mass) {
     var a = mass - element.m_min;
     a /= element.m_max - element.m_min;
 
@@ -51,58 +47,6 @@ function f1(element, mass) {
 }
 
 function lerp(a, b, value) {
-    return a * (1 - value) + b * value;
-}
-function AddComponent() {
-    var button = document.createElement('button');
-    button.innerText = 'calc';
-    button.onclick = function () {
-        ws.Calculate()
-    }
-    return button;
-}
-
-function Calculate() {
-    var button = document.createElement('button');
-    button.innerText = '+';
-    button.onclick = function () {
-        ws.data.components.push(new Component());
-        ws.Redraw();
-    }
-    return button;
-}
-
-function CreateInputName(index) {
-    var div = document.createElement('div');
-
-    var select = document.createElement('select');
-    for (let i = 0; i < table1.length; i++) {
-        var option = document.createElement('option');
-        option.value = i;
-        option.innerText = table1[i].name;
-        select.appendChild(option);
-    }
-    select.onchange = function () {
-        ws.data.components[index].select = table1[select.value];
-        sw.Redraw();
-    }
-    select.value = table1.indexOf(ws.data.components[index].select);
-
-    var input = document.createElement('input');
-    input.type = 'number';
-    input.onchange = function () {
-        ws.data.components[index].mass = input.value;
-    }
-    input.value = ws.data.components[index].mass;
-
-
-    var a = document.createElement('a');
-    a.innerText = '(' + ws.data.components[index].select.m_min + ' - '
-        + ws.data.components[index].select.m_max + ')';
-
-    div.appendChild(select);
-    div.appendChild(input);
-    div.appendChild(a);
-
-    return div;
+    // return a * (1 - value) + b * value;
+    return a + (b - a) * value;
 }
