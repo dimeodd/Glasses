@@ -36,6 +36,14 @@ class Workspace {
 
         alert(ktr);
     }
+
+    GetExcludeElID_List() {
+        var list = [];
+        this.data.components.forEach(element => {
+            list.push(table1.indexOf(element.select))
+        });
+        return list;
+    }
 }
 
 function glass_f1(element, mass) {
@@ -43,7 +51,6 @@ function glass_f1(element, mass) {
     a /= element.m_max - element.m_min;
 
     return lerp(element.ktr_max, element.ktr_min, a);
-
 }
 
 function lerp(a, b, value) {
